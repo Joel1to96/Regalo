@@ -1,53 +1,62 @@
 body {
-    background-color: #f0f8ff;
-    font-family: 'Roboto', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
     margin: 0;
+    padding: 20px;
 }
 
 .container {
+    max-width: 500px;
+    margin: auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
     text-align: center;
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 600px;
+    color: #333333;
 }
 
-h1 {
-    color: #333;
-}
-
-.book-cover {
-    width: 200px;
-    margin: 20px 0;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.release-date {
-    font-size: 1.2em;
-    color: #555;
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     margin-bottom: 20px;
 }
 
-.message {
-    font-size: 1em;
-    color: #666;
-    margin-bottom: 15px;
+input, button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
 }
 
-.signature {
-    font-size: 1em;
-    color: #333;
-    margin-top: 20px;
+button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
 }
 
-#countdown {
-    margin-top: 20px;
-    font-size: 1.2em;
-    color: #007BFF;
+button:hover {
+    background-color: #45a049;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background: #f1f1f1;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#balanceSummary {
+    font-weight: bold;
+    text-align: center;
+    font-size: 18px;
 }
