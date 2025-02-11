@@ -3,20 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu Regalo de Navidad</title>
+    <title>Historial de Pagos</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>¡Feliz Navidad, Cosita! 🎄❤️</h1>
-        <img src="alasonix.jpg" alt="Portada del Libro" class="book-cover">
-        <p class="release-date">Disponible en febrero</p>
-        <p class="message">Aunque aún no puedas tenerlo en tus manos, me aseguré de que lo tengas listo para ti tan pronto como se publique. <br><br> Gracias por ser la persona increíble que eres y por llenar mi vida de amor y felicidad.</p>
-        <br>
-        <p class="message">TE AMO</p>
-        <!-- Opcional: Añadir un contador regresivo -->
-        <div id="countdown"></div>
+        <h1>Historial de Pagos Compartidos</h1>
+
+        <!-- Formulario para añadir pagos -->
+        <form id="paymentForm">
+            <input type="text" id="nombre" placeholder="¿Quién pagó?" required>
+            <input type="number" id="monto" placeholder="Monto (€)" required>
+            <input type="text" id="descripcion" placeholder="Descripción" required>
+            <button type="submit">Añadir Pago</button>
+        </form>
+
+        <!-- Sección para mostrar los pagos -->
+        <h2>Pagos Registrados</h2>
+        <ul id="paymentList"></ul>
+
+        <!-- Resumen del balance -->
+        <h2>Balance</h2>
+        <p id="balanceSummary">No hay pagos registrados aún.</p>
     </div>
 
     <script src="script.js"></script>
