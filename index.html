@@ -1,32 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historial de Pagos</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Historial de Pagos Compartidos</h1>
+<script async
+  src="https://js.stripe.com/v3/buy-button.js">
+</script>
 
-        <!-- Formulario para añadir pagos -->
-        <form id="paymentForm">
-            <input type="text" id="nombre" placeholder="¿Quién pagó?" required>
-            <input type="number" id="monto" placeholder="Monto (€)" required>
-            <input type="text" id="descripcion" placeholder="Descripción" required>
-            <button type="submit">Añadir Pago</button>
-        </form>
-
-        <!-- Sección para mostrar los pagos -->
-        <h2>Pagos Registrados</h2>
-        <ul id="paymentList"></ul>
-
-        <!-- Resumen del balance -->
-        <h2>Balance</h2>
-        <p id="balanceSummary">No hay pagos registrados aún.</p>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
+<stripe-buy-button
+  buy-button-id="buy_btn_1SVFIqBC2ePPgc8zZJiu4uGY"
+  publishable-key="pk_live_51SVCYtBC2ePPgc8z47yqT6rYQc54MkSwljdk0svrkK5IMwzaZyTIAMeo90vhKXNgYLxDheDIB5ExmLFieFConwUv00WYrNAyK2"
+>
+</stripe-buy-button>
