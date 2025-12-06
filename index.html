@@ -1,9 +1,461 @@
-<script async
-  src="https://js.stripe.com/v3/buy-button.js">
-</script>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestor de Apuestas Ruleta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-<stripe-buy-button
-  buy-button-id="buy_btn_1SVFIqBC2ePPgc8zZJiu4uGY"
-  publishable-key="pk_live_51SVCYtBC2ePPgc8z47yqT6rYQc54MkSwljdk0svrkK5IMwzaZyTIAMeo90vhKXNgYLxDheDIB5ExmLFieFConwUv00WYrNAyK2"
->
-</stripe-buy-button>
+    body {
+      margin: 0;
+      padding: 16px;
+      background: #f5f5f7;
+      color: #111827;
+    }
+
+    .app {
+      max-width: 700px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      margin-top: 0;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .top-row {
+      display: grid;
+      grid-template-columns: 1.2fr 1.8fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .top-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: #f9fafb;
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .card label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #4b5563;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .card input[type="number"] {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 0.95rem;
+    }
+
+    .card input[type="number"]:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 1px #6366f1;
+    }
+
+    .current-info {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.95rem;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .label-text {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #4b5563;
+    }
+
+    .value-text {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #ffffff;
+      min-width: 80px;
+    }
+
+    .chip.rojo {
+      background: #ef4444;
+    }
+
+    .chip.negro {
+      background: #111827;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    button {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.05s ease, box-shadow 0.05s ease, opacity 0.1s ease;
+    }
+
+    button:active {
+      transform: translateY(1px);
+      box-shadow: none;
+      opacity: 0.9;
+    }
+
+    .btn-ganar {
+      background: #22c55e;
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(34, 197, 94, 0.4);
+    }
+
+    .btn-perder {
+      background: #ef4444;
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
+    }
+
+    .btn-reset {
+      background: #e5e7eb;
+      color: #111827;
+      box-shadow: none;
+      flex: 0 0 auto;
+      padding-inline: 12px;
+      font-size: 0.8rem;
+    }
+
+    .history-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      margin-bottom: 6px;
+    }
+
+    .history-header h2 {
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    .history {
+      max-height: 350px;
+      overflow-y: auto;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      background: #e5e7eb;
+      z-index: 1;
+    }
+
+    th, td {
+      padding: 6px 8px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      font-weight: 600;
+      color: #374151;
+      border-bottom: 1px solid #d1d5db;
+    }
+
+    tbody tr:nth-child(odd) {
+      background: #f9fafb;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #ffffff;
+    }
+
+    .tag-resultado {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .tag-ganado {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .tag-perdido {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .footnote {
+      margin-top: 8px;
+      font-size: 0.75rem;
+      color: #6b7280;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>Sistema Ruleta – Seguimiento de Apuestas</h1>
+
+    <div class="top-row">
+      <!-- Apuesta inicial -->
+      <div class="card">
+        <label for="initialBet">Apuesta inicial</label>
+        <input
+          type="number"
+          id="initialBet"
+          min="0.01"
+          step="0.01"
+          value="1"
+        />
+        <p style="margin: 4px 0 0; font-size: 0.75rem; color: #6b7280;">
+          Cambia este valor antes de empezar a registrar tiradas.
+        </p>
+      </div>
+
+      <!-- Info apuesta actual -->
+      <div class="card">
+        <div class="current-info">
+          <div class="row">
+            <span class="label-text">Tirada actual</span>
+            <span class="value-text" id="roundNumber">1</span>
+          </div>
+          <div class="row">
+            <span class="label-text">Color a apostar</span>
+            <span id="currentColorBadge" class="chip rojo">Rojo (R)</span>
+          </div>
+          <div class="row">
+            <span class="label-text">Cantidad a apostar</span>
+            <span class="value-text" id="currentBetDisplay">1.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px;">
+      <div class="buttons">
+        <button id="btnWin" class="btn-ganar">Ganó</button>
+        <button id="btnLose" class="btn-perder">Perdió</button>
+      </div>
+      <button id="btnReset" class="btn-reset">Reiniciar</button>
+    </div>
+
+    <!-- Historial -->
+    <div class="history-header">
+      <h2>Historial de tiradas</h2>
+    </div>
+
+    <div class="history">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Color</th>
+            <th>Cantidad</th>
+            <th>Resultado</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody">
+          <!-- Las filas se añaden por JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <p class="footnote">
+      Esta herramienta solo te ayuda a seguir tu sistema. La ruleta siempre tiene ventaja para la casa; juega con responsabilidad.
+    </p>
+  </div>
+
+  <script>
+    // Secuencia fija de colores: R N R R N N (bucle)
+    const sequence = ["R", "N", "R", "R", "N", "N"];
+
+    let initialBet = 1;
+    let currentBet = initialBet;
+    let currentIndex = 0; // posición en la secuencia
+    let roundNumber = 1;
+
+    const initialBetInput = document.getElementById("initialBet");
+    const currentColorBadge = document.getElementById("currentColorBadge");
+    const currentBetDisplay = document.getElementById("currentBetDisplay");
+    const roundNumberSpan = document.getElementById("roundNumber");
+    const historyBody = document.getElementById("historyBody");
+
+    const btnWin = document.getElementById("btnWin");
+    const btnLose = document.getElementById("btnLose");
+    const btnReset = document.getElementById("btnReset");
+
+    function formatAmount(num) {
+      return Number(num).toFixed(2);
+    }
+
+    function getCurrentColor() {
+      return sequence[currentIndex];
+    }
+
+    function updateColorBadge() {
+      const color = getCurrentColor();
+      if (color === "R") {
+        currentColorBadge.textContent = "Rojo (R)";
+        currentColorBadge.classList.remove("negro");
+        currentColorBadge.classList.add("rojo");
+      } else {
+        currentColorBadge.textContent = "Negro (N)";
+        currentColorBadge.classList.remove("rojo");
+        currentColorBadge.classList.add("negro");
+      }
+    }
+
+    function updateUI() {
+      roundNumberSpan.textContent = roundNumber;
+      currentBetDisplay.textContent = formatAmount(currentBet);
+      updateColorBadge();
+    }
+
+    function addHistoryRow(resultado) {
+      const tr = document.createElement("tr");
+
+      // Nº tirada
+      const tdNum = document.createElement("td");
+      tdNum.textContent = roundNumber;
+
+      // Color
+      const tdColor = document.createElement("td");
+      const color = getCurrentColor();
+      tdColor.textContent = color === "R" ? "Rojo (R)" : "Negro (N)";
+
+      // Cantidad
+      const tdCant = document.createElement("td");
+      tdCant.textContent = formatAmount(currentBet);
+
+      // Resultado
+      const tdRes = document.createElement("td");
+      const spanRes = document.createElement("span");
+      spanRes.classList.add("tag-resultado");
+      if (resultado === "ganado") {
+        spanRes.textContent = "Ganado";
+        spanRes.classList.add("tag-ganado");
+      } else {
+        spanRes.textContent = "Perdido";
+        spanRes.classList.add("tag-perdido");
+      }
+      tdRes.appendChild(spanRes);
+
+      tr.appendChild(tdNum);
+      tr.appendChild(tdColor);
+      tr.appendChild(tdCant);
+      tr.appendChild(tdRes);
+
+      historyBody.appendChild(tr);
+    }
+
+    function handleResult(type) {
+      // Registrar la tirada actual en el historial
+      addHistoryRow(type === "win" ? "ganado" : "perdido");
+
+      // Calcular siguiente apuesta
+      if (type === "win") {
+        // Si gana, vuelve a la apuesta inicial
+        currentBet = initialBet;
+      } else {
+        // Si pierde, apuesta el doble de la cantidad que acaba de perder
+        currentBet = currentBet * 2;
+      }
+
+      // Avanzar en la secuencia de colores
+      currentIndex = (currentIndex + 1) % sequence.length;
+
+      // Siguiente nº de tirada
+      roundNumber++;
+
+      // Actualizar la interfaz
+      updateUI();
+    }
+
+    // Eventos botones
+    btnWin.addEventListener("click", () => handleResult("win"));
+    btnLose.addEventListener("click", () => handleResult("lose"));
+
+    // Cambiar apuesta inicial
+    initialBetInput.addEventListener("change", () => {
+      const value = parseFloat(initialBetInput.value);
+      if (!isNaN(value) && value > 0) {
+        initialBet = value;
+        // Si aún no hay historial, sincronizamos la apuesta actual
+        if (!historyBody.firstChild) {
+          currentBet = initialBet;
+          updateUI();
+        }
+      } else {
+        initialBetInput.value = formatAmount(initialBet);
+      }
+    });
+
+    // Reiniciar todo
+    btnReset.addEventListener("click", () => {
+      historyBody.innerHTML = "";
+      roundNumber = 1;
+      currentIndex = 0;
+      const value = parseFloat(initialBetInput.value);
+      initialBet = !isNaN(value) && value > 0 ? value : 1;
+      currentBet = initialBet;
+      updateUI();
+    });
+
+    // Inicializar interfaz
+    updateUI();
+  </script>
+</body>
+</html>
